@@ -1,20 +1,24 @@
 # For more information: https://laravel.com/docs/sail
-version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            # The Sail 8.1 runtime Dockerfile is vendored into this repo (copied
+            # from vendor/laravel/sail/runtimes/8.1) and patched so that the
+            # image keeps building against current Node.js/npm releases.
+            context: ./docker/8.1
             dockerfile: Dockerfile
             args:
-                WWWGROUP: '${WWWGROUP}'
+                # Fall back to 1000 when the variables are not exported, which
+                # is the case when docker compose is used directly instead of
+                # through vendor/bin/sail (it exports them from $UID/$GID).
+                WWWGROUP: '${WWWGROUP:-1000}'
         image: sail-8.1/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
             - '${APP_PORT:-80}:80'
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
-            WWWUSER: '${WWWUSER}'
+            WWWUSER: '${WWWUSER:-1000}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
@@ -37,7 +41,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:

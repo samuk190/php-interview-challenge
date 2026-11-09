@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API\V1\CatFacts\Rest;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\CatFacts\Rest\IndexRequest;
 use App\Repositories\CatFactRepository;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends Controller
@@ -16,9 +16,9 @@ class IndexController extends Controller
         $this->repository = $catFactRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(IndexRequest $request): Response
     {
-        $catFacts = $this->repository->getAllWithPagination($request->all());
+        $catFacts = $this->repository->getAllWithPagination($request->validated());
 
         return response()->json($catFacts);
     }

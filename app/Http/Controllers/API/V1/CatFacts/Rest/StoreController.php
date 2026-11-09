@@ -20,7 +20,7 @@ class StoreController extends Controller
     public function __invoke(StoreRequest $request): Response
     {
         try {
-            $catFact = $this->repository->store($request->all());
+            $catFact = $this->repository->store($request->validated());
         } catch (Exception $exception) {
             abort(500, $exception->getMessage());
         }

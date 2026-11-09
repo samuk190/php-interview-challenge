@@ -26,7 +26,7 @@ class UpdateController extends Controller
         }
 
         try {
-            $updated = $this->repository->update($catFact, $request->all());
+            $updated = $this->repository->update($catFact, $request->validated());
         } catch (Exception $exception) {
             abort(500, $exception->getMessage());
         }

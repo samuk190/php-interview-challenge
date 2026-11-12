@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\API\V1\DogFacts\Rest;
@@ -18,7 +19,7 @@ class UpdateControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->dogFact = new DogFact();
+        $this->dogFact = new DogFact;
         $this->dogFact->fact = 'This is the original dog fact';
 
         $this->dogFact->save();
@@ -33,7 +34,7 @@ class UpdateControllerTest extends TestCase
         }
     }
 
-    public function testSuccess(): void
+    public function test_success(): void
     {
         $response = $this->putJson("/api/v1/dog-facts/{$this->dogFact->id}", [
             'fact' => $this->updatedFact,
@@ -51,7 +52,7 @@ class UpdateControllerTest extends TestCase
         ]);
     }
 
-    public function testNotFound()
+    public function test_not_found()
     {
         $response = $this->putJson('/api/v1/dog-facts/6942069', [
             'fact' => $this->updatedFact,
@@ -60,7 +61,7 @@ class UpdateControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function testValidationFailure(): void
+    public function test_validation_failure(): void
     {
         $response = $this->putJson("/api/v1/dog-facts/{$this->dogFact->id}", []);
 
@@ -80,7 +81,7 @@ class UpdateControllerTest extends TestCase
         $response3->assertStatus(422);
     }
 
-    public function testHandlesExceptionDuringSave(): void
+    public function test_handles_exception_during_save(): void
     {
         $this->app->bind(UpdateController::class, function () {
             $mock = $this->getMockBuilder(DogFactRepository::class)
@@ -101,7 +102,7 @@ class UpdateControllerTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function testHandlesFailureToSave(): void
+    public function test_handles_failure_to_save(): void
     {
         $this->app->bind(UpdateController::class, function () {
             $mock = $this->getMockBuilder(DogFactRepository::class)

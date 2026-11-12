@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\API\V1\DogFacts\Rest;
@@ -16,7 +17,7 @@ class ShowControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->dogFact = new DogFact();
+        $this->dogFact = new DogFact;
         $this->dogFact->fact = $this->fact;
 
         $this->dogFact->save();
@@ -31,7 +32,7 @@ class ShowControllerTest extends TestCase
         }
     }
 
-    public function testSuccess(): void
+    public function test_success(): void
     {
         $response = $this->getJson("/api/v1/dog-facts/{$this->dogFact->id}");
 
@@ -42,14 +43,14 @@ class ShowControllerTest extends TestCase
         ]);
     }
 
-    public function testNotFound(): void
+    public function test_not_found(): void
     {
         $response = $this->getJson('/api/v1/dog-facts/6942069');
 
         $response->assertStatus(404);
     }
 
-    public function testNotFoundReturnsJson(): void
+    public function test_not_found_returns_json(): void
     {
         $response = $this->get('/api/v1/dog-facts/6942069');
 

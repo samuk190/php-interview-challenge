@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Repositories;
@@ -12,7 +13,7 @@ class DogFactRepository
     {
         $pageSize = $options['pageSize'] ?? config('pagination.default_size');
 
-        return DogFact::with($relations)->paginate($pageSize);
+        return DogFact::with($relations)->orderBy('id', 'asc')->paginate($pageSize);
     }
 
     public function getById(int $id, array $relations = []): ?DogFact
@@ -22,7 +23,7 @@ class DogFactRepository
 
     public function store(array $options): ?DogFact
     {
-        $dogFact = new DogFact();
+        $dogFact = new DogFact;
 
         return $this->setFieldsAndPersist($dogFact, $options);
     }

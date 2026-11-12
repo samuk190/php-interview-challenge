@@ -17,21 +17,75 @@ class UpdateController extends Controller
         $this->repository = $dogFactRepository;
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/v1/dog-facts/{id}",
+     *     operationId="updateDogFact",
+     *     tags={"Dog Facts"},
+     *     summary="Update a dog fact",
+     *     description="Updates an existing dog fact by its ID.",
+     *
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Dog fact ID",
+     *         required=true,
+     *
+     *         @OA\Schema(type="integer")
+     *     ),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Updated dog fact payload",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/FactInput")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully updated dog fact",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/DogFact")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="Dog fact not found",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/ValidationErrorResponse")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
+     */
     public function __invoke(int $id, UpdateRequest $request): Response
     {
         $dogFact = $this->repository->getById($id);
 
-        if (!$dogFact) {
+        if (! $dogFact) {
             abort(404);
         }
 
         try {
             $updated = $this->repository->update($dogFact, $request->validated());
         } catch (Exception $exception) {
-            abort(500, $exception->getMessage());
+            report($exception);
+            abort(500, 'Dog fact could not be updated');
         }
 
-        if (!$updated) {
+        if (! $updated) {
             abort(500, 'Dog fact could not be updated');
         }
 

@@ -14,18 +14,18 @@ assertions, ~91% line coverage). But there is **one severe correctness bug** (ro
 
 | # | Severity | Issue | Status |
 |---|---|---|---|
-| 1 | **Critical** | `{id}` coerced to int — `DELETE /dog-facts/1.5` deleted record 1 | Open |
-| 2 | **High** | 500 bodies leak SQL/exception text to the client | Open |
-| 3 | **High** | Non-numeric `{id}` → `500 TypeError` instead of `404` | Open |
-| 4 | Medium | `fact` longer than 255 chars → `500`, unvalidated | Open |
-| 5 | Medium | Tests run against the **dev** database (no isolation) | Open |
-| 6 | Medium | `pageSize` unbounded (`?pageSize=100000` serialises everything) | Open |
-| 7 | Low | No `orderBy` — pagination order is not guaranteed stable | Open |
+| 1 | **Critical** | `{id}` coerced to int — `DELETE /dog-facts/1.5` deleted record 1 | ✅ Fixed (`->whereNumber('id')`) |
+| 2 | **High** | 500 bodies leak SQL/exception text to the client | ✅ Fixed (`report()` + generic message) |
+| 3 | **High** | Non-numeric `{id}` → `500 TypeError` instead of `404` | ✅ Fixed (resolved by `whereNumber`) |
+| 4 | Medium | `fact` longer than 255 chars → `500`, unvalidated | ✅ Fixed (`max:255` validation rule) |
+| 5 | Medium | Tests run against the **dev** database (no isolation) | ✅ Fixed (`DB_DATABASE=testing` enabled) |
+| 6 | Medium | `pageSize` unbounded (`?pageSize=100000` serialises everything) | ✅ Fixed (`max:100` validation rule) |
+| 7 | Low | No `orderBy` — pagination order is not guaranteed stable | ✅ Fixed (`orderBy('id', 'asc')`) |
 | 8 | Low | Missing factories; tests hand-roll models, ignore `RefreshDatabase` | Open |
-| 9 | Low | README claims tests use the `testing` DB — false | Open |
-| 10 | Low | 28 files fail Pint; style differs from the project's own tooling | Open |
-| 11 | Nit | Unused `use Illuminate\Http\Request` in `routes/api.php` | Open |
-| 12 | Nit | Duplicate validation messages on empty `pageSize` | Open |
+| 9 | Low | README claims tests use the `testing` DB — false | ✅ Fixed (isolated schema active) |
+| 10 | Low | 28 files fail Pint; style differs from the project's own tooling | ✅ Fixed (89 files pass Pint) |
+| 11 | Nit | Unused `use Illuminate\Http\Request` in `routes/api.php` | ✅ Fixed (removed) |
+| 12 | Nit | Duplicate validation messages on empty `pageSize` | ✅ Fixed |
 
 ---
 

@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (HttpExceptionInterface $exception, Request $request) {
-            if (!$request->is('api/*')) {
+            if (! $request->is('api/*')) {
                 return null;
             }
 

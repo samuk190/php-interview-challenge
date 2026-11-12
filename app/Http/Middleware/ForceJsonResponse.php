@@ -14,8 +14,6 @@ class ForceJsonResponse
      * responses (404, 422, 500, ...) are rendered as JSON, no matter which
      * Accept header the client sent.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

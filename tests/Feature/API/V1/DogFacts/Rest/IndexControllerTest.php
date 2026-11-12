@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\API\V1\DogFacts\Rest;
@@ -8,7 +9,7 @@ use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
 {
-    public function testSuccess(): void
+    public function test_success(): void
     {
         $response = $this->getJson('/api/v1/dog-facts');
 
@@ -26,11 +27,11 @@ class IndexControllerTest extends TestCase
             'per_page',
             'prev_page_url',
             'to',
-            'total'
+            'total',
         ]);
     }
 
-    public function testSuccessWithPage(): void
+    public function test_success_with_page(): void
     {
         $response = $this->json('GET', '/api/v1/dog-facts', [
             'page' => 2,
@@ -42,7 +43,7 @@ class IndexControllerTest extends TestCase
         ]);
     }
 
-    public function testSuccessWithPageSize(): void
+    public function test_success_with_page_size(): void
     {
         $response = $this->json('GET', '/api/v1/dog-facts', [
             'pageSize' => 15,
@@ -54,7 +55,7 @@ class IndexControllerTest extends TestCase
         ]);
     }
 
-    public function testDefaultsTo25PerPage(): void
+    public function test_defaults_to25_per_page(): void
     {
         $response = $this->getJson('/api/v1/dog-facts');
 
@@ -64,12 +65,12 @@ class IndexControllerTest extends TestCase
         ]);
     }
 
-    public function testReturnsRequestedPageSizeAndPage(): void
+    public function test_returns_requested_page_size_and_page(): void
     {
         $facts = [];
 
         for ($i = 1; $i <= 10; $i++) {
-            $fact = new DogFact();
+            $fact = new DogFact;
             $fact->fact = "Pagination test fact number $i";
             $fact->save();
 
@@ -89,7 +90,7 @@ class IndexControllerTest extends TestCase
         $this->cleanUpModels($facts);
     }
 
-    public function testRejectsInvalidPage(): void
+    public function test_rejects_invalid_page(): void
     {
         $response = $this->getJson('/api/v1/dog-facts?page=0');
 
@@ -97,7 +98,7 @@ class IndexControllerTest extends TestCase
         $response->assertJsonValidationErrors(['page']);
     }
 
-    public function testRejectsNonNumericPageSize(): void
+    public function test_rejects_non_numeric_page_size(): void
     {
         $response = $this->getJson('/api/v1/dog-facts?pageSize=abc');
 
@@ -105,7 +106,7 @@ class IndexControllerTest extends TestCase
         $response->assertJsonValidationErrors(['pageSize']);
     }
 
-    public function testRejectsNegativePageSize(): void
+    public function test_rejects_negative_page_size(): void
     {
         $response = $this->getJson('/api/v1/dog-facts?pageSize=-1');
 
@@ -113,7 +114,15 @@ class IndexControllerTest extends TestCase
         $response->assertJsonValidationErrors(['pageSize']);
     }
 
-    public function testReturnsJsonOnErrors(): void
+    public function test_rejects_page_size_above_max(): void
+    {
+        $response = $this->getJson('/api/v1/dog-facts?pageSize=101');
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['pageSize']);
+    }
+
+    public function test_returns_json_on_errors(): void
     {
         $response = $this->get('/api/v1/dog-facts?pageSize=abc');
 

@@ -16,6 +16,7 @@ storage path and adds a complete, convention-consistent **Dog Facts** resource.
    - [Option B — plain Docker Compose](#option-b--plain-docker-compose)
 5. [Running the tests](#running-the-tests)
 6. [API reference](#api-reference)
+   - [Interactive Swagger UI](#interactive-swagger-ui)
    - [Cat Facts](#cat-facts)
    - [Dog Facts](#dog-facts)
    - [Pagination](#pagination)
@@ -79,10 +80,12 @@ and [`docs/diagrams/request-lifecycle.svg`](docs/diagrams/request-lifecycle.svg)
 | `fact` required on store **and** update | ✅ 422 on missing/`null`/non-string | `StoreRequest`, `UpdateRequest` |
 | Dog Facts feature tests | ✅ 26 tests | `tests/Feature/API/V1/DogFacts` |
 | JSON in, JSON out | ✅ including framework errors | `ForceJsonResponse` middleware + exception handler |
+| Swagger UI / OpenAPI 3.0 Documentation | ✅ Interactive UI & JSON spec | `/api/documentation`, `/docs`, `darkaonline/l5-swagger` |
+| Security Hardening & Bug Fixes | ✅ Input caps, regex routes, non-leaking 500s | `whereNumber`, `max:255`, `max:100`, `127.0.0.1` MySQL |
 | Detailed README | ✅ this file | |
 | `prompt.md` with the full AI conversation | ✅ | [`prompt.md`](prompt.md) |
 
-**Test suite: 44 tests, 131 assertions, all green.**
+**Test suite: 52 tests, 161 assertions, all green.**
 
 ---
 
@@ -201,6 +204,8 @@ Base URL: `http://localhost:8042/api/v1`
 
 | Method | Endpoint | Description |
 |---|---|---|
+| `GET` | `/api/documentation` | Interactive Swagger UI (OpenAPI 3.0) |
+| `GET` | `/docs` | OpenAPI 3.0 JSON specification |
 | `GET` | `/api/v1` | API name, version and available resources |
 | `GET` | `/api/v1/cat-facts` | Paginated list of cat facts |
 | `POST` | `/api/v1/cat-facts` | Store a cat fact |
@@ -217,6 +222,18 @@ All requests and responses use `application/json`. The API also returns JSON for
 framework-level errors (`404`, `422`, `500`, …) regardless of the `Accept` header
 sent by the client.
 
+### Interactive Swagger UI
+
+Interactive OpenAPI 3.0 documentation is available directly in your browser:
+
+- **Swagger UI:** <http://localhost:8042/api/documentation>
+- **OpenAPI JSON Spec:** <http://localhost:8042/docs>
+
+To regenerate the documentation after modifying endpoints or schemas:
+```bash
+vendor/bin/sail artisan l5-swagger:generate
+```
+
 ### Root
 
 ```bash
@@ -229,7 +246,8 @@ curl http://localhost:8042/api/v1
   "version": 1,
   "resources": {
     "cat-facts": "http://localhost:8042/api/v1/cat-facts",
-    "dog-facts": "http://localhost:8042/api/v1/dog-facts"
+    "dog-facts": "http://localhost:8042/api/v1/dog-facts",
+    "documentation": "http://localhost:8042/api/documentation"
   }
 }
 ```

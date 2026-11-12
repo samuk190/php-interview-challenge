@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Repositories;
@@ -12,7 +13,7 @@ class CatFactRepository
     {
         $pageSize = $options['pageSize'] ?? config('pagination.default_size');
 
-        return CatFact::with($relations)->paginate($pageSize);
+        return CatFact::with($relations)->orderBy('id', 'asc')->paginate($pageSize);
     }
 
     public function getById(int $id, array $relations = []): ?CatFact
@@ -22,7 +23,7 @@ class CatFactRepository
 
     public function store(array $options): ?CatFact
     {
-        $catFact = new CatFact();
+        $catFact = new CatFact;
 
         return $this->setFieldsAndPersist($catFact, $options);
     }

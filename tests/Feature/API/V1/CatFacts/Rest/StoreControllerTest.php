@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\API\V1\CatFacts\Rest;
@@ -12,7 +13,7 @@ class StoreControllerTest extends TestCase
 {
     protected string $fact = 'This is a test fact from the StoreControllerTest';
 
-    public function testSuccess(): void
+    public function test_success(): void
     {
         $response = $this->postJson('/api/v1/cat-facts', [
             'fact' => $this->fact,
@@ -26,7 +27,7 @@ class StoreControllerTest extends TestCase
         CatFact::destroy($response->json('id'));
     }
 
-    public function testValidationFailure(): void
+    public function test_validation_failure(): void
     {
         $response = $this->postJson('/api/v1/cat-facts', []);
 
@@ -43,9 +44,15 @@ class StoreControllerTest extends TestCase
         ]);
 
         $response3->assertStatus(422);
+
+        $response4 = $this->postJson('/api/v1/cat-facts', [
+            'fact' => str_repeat('a', 256),
+        ]);
+
+        $response4->assertStatus(422);
     }
 
-    public function testHandlesExceptionDuringSave(): void
+    public function test_handles_exception_during_save(): void
     {
         $this->app->bind(StoreController::class, function () {
             $mock = $this->getMockBuilder(CatFactRepository::class)
@@ -66,7 +73,7 @@ class StoreControllerTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function testHandlesFailureToSave(): void
+    public function test_handles_failure_to_save(): void
     {
         $this->app->bind(StoreController::class, function () {
             $mock = $this->getMockBuilder(CatFactRepository::class)

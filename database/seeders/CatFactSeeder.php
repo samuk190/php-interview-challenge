@@ -21,7 +21,7 @@ class CatFactSeeder extends Seeder
                 continue; // this fact exists, skip it
             }
 
-            $model = new CatFact();
+            $model = new CatFact;
             $model->fact = $fact;
 
             $model->save();

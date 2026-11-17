@@ -234,6 +234,22 @@ To regenerate the documentation after modifying endpoints or schemas:
 vendor/bin/sail artisan l5-swagger:generate
 ```
 
+### Insomnia / Postman Import
+
+A ready-to-import Insomnia v4 collection is included at the repository root: [`insomnia_collection.json`](insomnia_collection.json).
+
+**How to import into Insomnia:**
+1. Open Insomnia $\rightarrow$ Click **Create** / **Import** (or **Preferences** $\rightarrow$ **Data** $\rightarrow$ **Import Data**).
+2. Select **From File** and pick `insomnia_collection.json`.
+3. It imports the entire workspace with:
+   - **🐕 Dog Facts**: List (with pagination), Create, Show, Update, Delete.
+   - **🐈 Cat Facts**: List, Create (validating the bug fix), Show, Update, Delete.
+   - **🛡️ Validation & Edge Cases**: 422 validation errors, non-numeric regex constraint 404s, and not found 404s.
+   - **📚 System & Documentation**: Discovery index, Swagger UI, and OpenAPI JSON spec.
+   - **Environments**: Switchable between `Base Environment` (port 8042) and `Localhost Port 80`.
+
+*(Alternatively, you can also import `storage/api-docs/api-docs.json` directly into Insomnia or Postman as an OpenAPI 3.0 specification).*
+
 ### Root
 
 ```bash

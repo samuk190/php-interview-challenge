@@ -84,11 +84,18 @@ The test suite consists of **52 automated tests** and **161 assertions** coverin
 
 ---
 
-## Interactive Swagger Documentation
+## Interactive Swagger Documentation & Insomnia Collection
 
+### 1. Swagger UI
 Open your browser to test endpoints interactively via Swagger UI:
 - **Swagger UI:** [http://localhost:8042/api/documentation](http://localhost:8042/api/documentation)
 - **OpenAPI 3.0 Spec:** [http://localhost:8042/docs/api-docs.json](http://localhost:8042/docs/api-docs.json)
+
+### 2. Insomnia Collection (1-Click Import)
+A native Insomnia v4 collection is available in the root of the repository: [`insomnia_collection.json`](file:///home/samuel/interviews/insomnia_collection.json).
+- Includes all Cat Facts, Dog Facts, Validation/Edge Cases, and System routes.
+- Pre-configured with switchable environments (`Base Environment: 8042` and `Localhost: 80`), query parameters, and JSON payloads.
+- Import via: Insomnia $\rightarrow$ **Create / Import** $\rightarrow$ **From File** $\rightarrow$ select `insomnia_collection.json`.
 
 ---
 

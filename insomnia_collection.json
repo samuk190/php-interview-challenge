@@ -1,0 +1,729 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-17T20:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_jobsity_php_challenge",
+      "parentId": null,
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "Animal Facts API (Jobsity PHP Challenge)",
+      "description": "Comprehensive REST API collection for Cat Facts & Dog Facts, including CRUD operations, pagination, validation tests, and Swagger documentation.",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_jobsity_php_challenge_base",
+      "parentId": "wrk_jobsity_php_challenge",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8042",
+        "cat_fact_id": 1,
+        "dog_fact_id": 1
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "cat_fact_id",
+          "dog_fact_id"
+        ]
+      },
+      "color": "#7d69cb",
+      "isPrivate": false,
+      "metaSortKey": 1794946140649,
+      "_type": "environment"
+    },
+    {
+      "_id": "env_sub_port80",
+      "parentId": "env_jobsity_php_challenge_base",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "Localhost Port 80",
+      "data": {
+        "base_url": "http://localhost"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url"
+        ]
+      },
+      "color": "#3cb371",
+      "isPrivate": false,
+      "metaSortKey": 1794946140650,
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_dog_facts",
+      "parentId": "wrk_jobsity_php_challenge",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "🐕 Dog Facts",
+      "description": "Endpoints to list, create, retrieve, update, and delete dog facts.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_cat_facts",
+      "parentId": "wrk_jobsity_php_challenge",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "🐈 Cat Facts",
+      "description": "Endpoints to list, create, retrieve, update, and delete cat facts.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 200,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_validation_errors",
+      "parentId": "wrk_jobsity_php_challenge",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "🛡️ Validation & Edge Cases",
+      "description": "Requests demonstrating error handling, 422 validation errors, and 404 responses.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 300,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_system_docs",
+      "parentId": "wrk_jobsity_php_challenge",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "name": "📚 System & Documentation",
+      "description": "API discovery index and Swagger OpenAPI specification.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 400,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_dog_list",
+      "parentId": "fld_dog_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts",
+      "name": "List Dog Facts (Paginated)",
+      "description": "Retrieves a paginated list of dog facts. Supports ?page=1 and ?pageSize=25 (default 25, min 1, max 100).",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "name": "pageSize",
+          "value": "25",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_dog_store",
+      "parentId": "fld_dog_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts",
+      "name": "Create Dog Fact",
+      "description": "Creates a new dog fact in the database. Returns 200 OK with the created entity.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fact\": \"A dog's nose print is unique, much like a human's fingerprint.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_dog_show",
+      "parentId": "fld_dog_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts/{{ _.dog_fact_id }}",
+      "name": "Get Dog Fact by ID",
+      "description": "Retrieves a specific dog fact by its integer primary key.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_dog_update",
+      "parentId": "fld_dog_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts/{{ _.dog_fact_id }}",
+      "name": "Update Dog Fact",
+      "description": "Updates an existing dog fact. Requires a valid non-empty string.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fact\": \"Dogs can understand up to 250 words and gestures.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 40,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_dog_destroy",
+      "parentId": "fld_dog_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts/{{ _.dog_fact_id }}",
+      "name": "Delete Dog Fact",
+      "description": "Deletes a dog fact by ID. Returns 204 No Content on success.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 50,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_list",
+      "parentId": "fld_cat_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/cat-facts",
+      "name": "List Cat Facts (Paginated)",
+      "description": "Retrieves a paginated list of cat facts. Supports ?page=1 and ?pageSize=25.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "name": "pageSize",
+          "value": "25",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_store",
+      "parentId": "fld_cat_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/cat-facts",
+      "name": "Create Cat Fact (Fixed Bug)",
+      "description": "Stores a new cat fact in the database. Validates the fix for StoreRequest authorize=true.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fact\": \"Cats spend 70% of their lives sleeping, which averages 13-16 hours a day.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_show",
+      "parentId": "fld_cat_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/cat-facts/{{ _.cat_fact_id }}",
+      "name": "Get Cat Fact by ID",
+      "description": "Retrieves a specific cat fact by its integer ID.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_update",
+      "parentId": "fld_cat_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/cat-facts/{{ _.cat_fact_id }}",
+      "name": "Update Cat Fact",
+      "description": "Updates an existing cat fact.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fact\": \"A group of cats is called a clowder.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 40,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_destroy",
+      "parentId": "fld_cat_facts",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/cat-facts/{{ _.cat_fact_id }}",
+      "name": "Delete Cat Fact",
+      "description": "Deletes a cat fact by ID. Returns 204 No Content.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 50,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_val_empty_fact",
+      "parentId": "fld_validation_errors",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts",
+      "name": "422 - Missing Fact Payload",
+      "description": "Expects 422 Unprocessable Entity with {\"fact\": [\"The fact field is required.\"]}.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_val_invalid_pagesize",
+      "parentId": "fld_validation_errors",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts",
+      "name": "422 - Non-Integer PageSize",
+      "description": "Expects 422 Unprocessable Entity when pageSize is not an integer.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "pageSize",
+          "value": "abc",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_val_pagesize_too_large",
+      "parentId": "fld_validation_errors",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts",
+      "name": "422 - PageSize Exceeds Max 100",
+      "description": "Expects 422 Unprocessable Entity when pageSize exceeds 100.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "pageSize",
+          "value": "150",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_val_not_found",
+      "parentId": "fld_validation_errors",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts/999999",
+      "name": "404 - Resource Not Found",
+      "description": "Expects 404 Resource not found when ID does not exist in database.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 40,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_val_route_constraint",
+      "parentId": "fld_validation_errors",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1/dog-facts/invalid-id",
+      "name": "404 - Non-Numeric ID Constraint",
+      "description": "Expects 404 because whereNumber('id') regex prevents route matching on non-numeric IDs.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 50,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_sys_index",
+      "parentId": "fld_system_docs",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/v1",
+      "name": "API Discovery Index (v1)",
+      "description": "Returns links to resources and documentation.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_sys_openapi_spec",
+      "parentId": "fld_system_docs",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/docs/api-docs.json",
+      "name": "OpenAPI 3.0 Specification JSON",
+      "description": "Returns the generated OpenAPI 3.0 specification.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_sys_swagger_ui",
+      "parentId": "fld_system_docs",
+      "modified": 1794946140649,
+      "created": 1794946140649,
+      "url": "{{ _.base_url }}/api/documentation",
+      "name": "Swagger UI Interactive Docs",
+      "description": "Renders the Swagger UI HTML dashboard in the browser.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "text/html"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}

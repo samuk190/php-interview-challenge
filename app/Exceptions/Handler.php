@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -43,6 +46,22 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (HttpExceptionInterface $exception, Request $request) {
+            if (! $request->is('api/*')) {
+                return null;
+            }
+
+            $status = $exception->getStatusCode();
+
+            return response()->json(
+                [
+                    'message' => $exception->getMessage()
+                        ?: (Response::$statusTexts[$status] ?? 'Error'),
+                ],
+                $status
+            );
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });

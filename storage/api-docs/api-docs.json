@@ -1,0 +1,872 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Animal Facts API",
+        "description": "REST API built with Laravel 9 / PHP 8.1 that serves curated facts about animals (Cat Facts & Dog Facts).",
+        "contact": {
+            "name": "API Support",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8042",
+            "description": "Animal Facts API Server"
+        }
+    ],
+    "paths": {
+        "/api/v1/cat-facts/{id}": {
+            "get": {
+                "tags": [
+                    "Cat Facts"
+                ],
+                "summary": "Get a single cat fact",
+                "description": "Retrieves a cat fact by its integer ID.",
+                "operationId": "getCatFactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Cat fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cat fact found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatFact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cat fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cat Facts"
+                ],
+                "summary": "Update a cat fact",
+                "description": "Updates an existing cat fact by its ID.",
+                "operationId": "updateCatFact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Cat fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated cat fact payload",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FactInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated cat fact",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatFact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cat fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cat Facts"
+                ],
+                "summary": "Delete a cat fact",
+                "description": "Deletes a cat fact by its ID.",
+                "operationId": "deleteCatFact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Cat fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cat fact successfully deleted"
+                    },
+                    "404": {
+                        "description": "Cat fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/cat-facts": {
+            "get": {
+                "tags": [
+                    "Cat Facts"
+                ],
+                "summary": "List cat facts (paginated)",
+                "description": "Returns a paginated list of cat facts with configurable page size.",
+                "operationId": "getCatFactsList",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number to retrieve (integer >= 1)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of facts per page (integer >= 1 and <= 100, default 25)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 25,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of cat facts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedCatFacts"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failure (e.g. invalid page or pageSize)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cat Facts"
+                ],
+                "summary": "Create a cat fact",
+                "description": "Stores a new cat fact in the database.",
+                "operationId": "storeCatFact",
+                "requestBody": {
+                    "description": "Cat fact payload",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FactInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully created cat fact",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatFact"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error (missing or invalid fact)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/dog-facts/{id}": {
+            "get": {
+                "tags": [
+                    "Dog Facts"
+                ],
+                "summary": "Get a single dog fact",
+                "description": "Retrieves a dog fact by its integer ID.",
+                "operationId": "getDogFactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Dog fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dog fact found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DogFact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dog fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dog Facts"
+                ],
+                "summary": "Update a dog fact",
+                "description": "Updates an existing dog fact by its ID.",
+                "operationId": "updateDogFact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Dog fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated dog fact payload",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FactInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated dog fact",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DogFact"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dog fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dog Facts"
+                ],
+                "summary": "Delete a dog fact",
+                "description": "Deletes a dog fact by its ID.",
+                "operationId": "deleteDogFact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Dog fact ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Dog fact successfully deleted"
+                    },
+                    "404": {
+                        "description": "Dog fact not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/dog-facts": {
+            "get": {
+                "tags": [
+                    "Dog Facts"
+                ],
+                "summary": "List dog facts (paginated)",
+                "description": "Returns a paginated list of dog facts with configurable page size.",
+                "operationId": "getDogFactsList",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number to retrieve (integer >= 1)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of facts per page (integer >= 1 and <= 100, default 25)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 25,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of dog facts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedDogFacts"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failure (e.g. invalid page or pageSize)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dog Facts"
+                ],
+                "summary": "Create a dog fact",
+                "description": "Stores a new dog fact in the database.",
+                "operationId": "storeDogFact",
+                "requestBody": {
+                    "description": "Dog fact payload",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FactInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully created dog fact",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DogFact"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error (missing or invalid fact)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1": {
+            "get": {
+                "tags": [
+                    "Discovery"
+                ],
+                "summary": "API Root Discovery",
+                "description": "Returns API service name, version, and exposed resource URLs.",
+                "operationId": "getApiDiscovery",
+                "responses": {
+                    "200": {
+                        "description": "Successful discovery response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Jobsity PHP Human Interview challenge API"
+                                        },
+                                        "version": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "resources": {
+                                            "properties": {
+                                                "cat-facts": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8042/api/v1/cat-facts"
+                                                },
+                                                "dog-facts": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8042/api/v1/dog-facts"
+                                                },
+                                                "documentation": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8042/api/documentation"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FactInput": {
+                "required": [
+                    "fact"
+                ],
+                "properties": {
+                    "fact": {
+                        "description": "The animal fact text",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "A group of cats is called a clowder."
+                    }
+                },
+                "type": "object"
+            },
+            "CatFact": {
+                "required": [
+                    "id",
+                    "fact",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "fact": {
+                        "type": "string",
+                        "example": "A group of cats is called a clowder."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T05:18:42.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T05:18:42.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "DogFact": {
+                "required": [
+                    "id",
+                    "fact",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "fact": {
+                        "type": "string",
+                        "example": "Dogs have a sense of time and predict future events."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T05:18:42.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T05:18:42.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationLink": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/cat-facts?page=1",
+                        "nullable": true
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginatedCatFacts": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CatFact"
+                        }
+                    },
+                    "first_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/cat-facts?page=1"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "last_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/cat-facts?page=5"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaginationLink"
+                        }
+                    },
+                    "next_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/cat-facts?page=2",
+                        "nullable": true
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/cat-facts"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "prev_page_url": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 25,
+                        "nullable": true
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 120
+                    }
+                },
+                "type": "object"
+            },
+            "PaginatedDogFacts": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DogFact"
+                        }
+                    },
+                    "first_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/dog-facts?page=1"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "last_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/dog-facts?page=5"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaginationLink"
+                        }
+                    },
+                    "next_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/dog-facts?page=2",
+                        "nullable": true
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8042/api/v1/dog-facts"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "prev_page_url": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 25,
+                        "nullable": true
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 120
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorResponse": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Resource not found"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrorResponse": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The fact field is required."
+                    },
+                    "errors": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Discovery",
+            "description": "API root discovery and status"
+        },
+        {
+            "name": "Cat Facts",
+            "description": "Operations on Cat Facts"
+        },
+        {
+            "name": "Dog Facts",
+            "description": "Operations on Dog Facts"
+        }
+    ]
+}
